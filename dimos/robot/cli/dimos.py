@@ -141,6 +141,10 @@ def create_dynamic_callback():  # type: ignore[no-untyped-def]
 main.callback()(create_dynamic_callback())  # type: ignore[no-untyped-call]
 main.add_typer(go2tool_app, name="go2tool")
 
+from dimos.robot.cli.patchbay import app as patchbay_app
+
+main.add_typer(patchbay_app, name="patchbay")
+
 
 def arg_help(
     config: type[BaseModel],
