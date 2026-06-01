@@ -605,12 +605,23 @@ def show_config(ctx: typer.Context) -> None:
 
 @main.command(name="list")
 def list_blueprints() -> None:
-    """List all available blueprints."""
+    """List all available blueprints, including installed patchbay packages."""
     from dimos.robot.all_blueprints import all_blueprints
+    from dimos.robot.get_all_blueprints import _patchbay_blueprints
 
     blueprints = [name for name in all_blueprints.keys() if not name.startswith("demo-")]
     for blueprint_name in sorted(blueprints):
         typer.echo(blueprint_name)
+
+    if _patchbay_blueprints:
+        typer.echo()
+        typer.echo(typer.style("Installed via patchbay:", bold=True))
+        for name, info in sorted(_patchbay_blueprints.items()):
+            manifest = info["manifest"]
+            icon = manifest.get("icon", "⬡")
+            version = manifest.get("version", "?")
+            desc = manifest.get("description", "")[:60]
+            typer.echo(f"  {icon}  {name} v{version}  {desc}")
 
 
 @main.command(context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
