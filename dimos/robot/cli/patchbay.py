@@ -141,9 +141,15 @@ def install(
     if skills:
         typer.echo(f"  Skills: {', '.join(s['name'] for s in skills)}")
 
+    robots = bp.get("robots", [])
+    robot_str = ", ".join(robots) if robots else "any robot"
+
     typer.echo()
-    typer.echo(f"  Ready. Add to your blueprint or run:")
-    typer.echo(f"    dimos run {bp.get('base', name)}")
+    typer.echo(f"  Compatible with: {robot_str}")
+    typer.echo(f"  Run it:")
+    typer.echo(f"    dimos run {name}")
+    typer.echo(f"  Or compose with a base blueprint:")
+    typer.echo(f"    dimos run {bp.get('base', 'unitree-go2')} {name}")
 
 
 @app.command()
